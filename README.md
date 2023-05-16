@@ -4,6 +4,8 @@ Aggreagated Hacker News stories into single JSON files.
 
 Use this as a Cron job to keep your local copy or API endpoints of HN up to date.
 
+This project is using the [Hacker News API](https://github.com/HackerNews/API) under the hood.
+
 ## Usage
 
 Before running the script, make sure you have the following dependencies installed:
