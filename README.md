@@ -6,9 +6,20 @@ Use this as a Cron job to keep your local copy or API endpoints of HN up to date
 
 ## Usage
 
+Before running the script, make sure you have the following dependencies installed:
+
+- [Lua](https://www.lua.org/)
+- [LuaRocks](https://luarocks.org/)
+
+Then install the following Lua packages:
+
+```sh
+[sudo] luarocks install lua-cjson
+```
+
 Use `crontab -e` to edit your crontab file and add the following line:
 
-```
+```text
 0 * * * * cd /path/to/hn-aggregated && lua top-stories.sh
 ```
 
