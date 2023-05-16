@@ -26,3 +26,5 @@ Use `crontab -e` to edit your crontab file and add the following line:
 This will run the script every hour and create a new JSON files in the directy `/path/to/hn-aggregated`.
 
 Check `config.lua` to see options for the scripts.
+
+For 50 top stories, the script takes about 6 minute to run.
