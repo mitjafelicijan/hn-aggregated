@@ -3,6 +3,9 @@ local ltn12 = require("ltn12")
 local cjson = require("cjson")
 local config = require("config")
 
+-- Fixes empty array conversion to object.
+cjson.encode_empty_table_as_object(false)
+
 local function trim(str)
     return str:gsub("^%s*(.-)%s*$", "%1")
 end
@@ -88,9 +91,9 @@ for i, v in ipairs(topStories) do
                     if comment.type == "comment" then
                         table.insert(comments, {
                             id = comment.id,
-                            text = sanitizeText(comment.text),
-                            by = comment.by,
-                            time = os.date("%H:%M", comment.time)
+                            text = sanitizeText(comment.text) or "",
+                            by = comment.by or "",
+                            time = os.date("%H:%M", comment.time) or ""
                         })
                     end
                 end
@@ -99,11 +102,11 @@ for i, v in ipairs(topStories) do
             -- Add the story to the aggregate table.
             table.insert(aggregate, {
                 id = story.id,
-                title = story.title,
-                url = story.url,
-                score = story.score,
-                by = story.by,
-                time = os.date("%H:%M", story.time),
+                title = story.title or "",
+                url = story.url or "",
+                score = story.score or 0,
+                by = story.by or "",
+                time = os.date("%H:%M", story.time) or "",
                 comments = comments
             })
         end
