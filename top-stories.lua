@@ -6,6 +6,13 @@ local config = require("config")
 -- Fixes empty array conversion to object.
 cjson.encode_empty_table_as_object(false)
 
+local function decodeCharacterEntities(encodedString)
+  local decodedString = encodedString:gsub("&#x([%x]+);", function(entity)
+    return string.char(tonumber(entity, 16))
+  end)
+  return decodedString
+end
+
 local function trim(str)
     return str:gsub("^%s*(.-)%s*$", "%1")
 end
@@ -18,9 +25,7 @@ local function sanitizeText(text)
     local sanitizedText = text
 
     sanitizedText = sanitizedText:gsub("<[^>]+>", "")
-    -- sanitizedText = sanitizedText:gsub("&gt;", ">")
-    -- sanitizedText = sanitizedText:gsub("&lt;", "<")
-
+    sanitizedText = decodeCharacterEntities(sanitizedText)
     sanitizedText = trim(sanitizedText)
 
     return sanitizedText
@@ -80,7 +85,7 @@ for i, v in ipairs(topStories) do
 
         if story.type == "story" then
 
-            print("Fetching story:", story.id)
+            print("Fetching story", string.format("[%d/%d]", i, config.numberOfStories), story.id, string.sub(story.title, 1, 40))
 
             -- Fetch the comments for the story.
             local comments = {}
@@ -116,6 +121,7 @@ for i, v in ipairs(topStories) do
 end
 
 -- Save the JSON data to a file
+cjson.encode_empty_table_as_object(false)
 local file = io.open("top-stories.json", "w")
 if file then
     file:write(cjson.encode(aggregate))
